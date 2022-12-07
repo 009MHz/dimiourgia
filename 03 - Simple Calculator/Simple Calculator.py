@@ -2,32 +2,34 @@
 import os
 def cls():
     """Clearing VS Code previous logs"""
-    os.system('cls' if os.name == 'nt' else 'clear')
+    os.system('cls' if os.name == 'nt' else 'clear')  # only works on VS code
 
 
 # calculator function
 def add(n1, n2):
-  return n1 + n2
+    return n1 + n2
 
 def subtract(n1, n2):
-  return n1 - n2
+    return n1 - n2
 
 def multiply(n1, n2):
-  return n1 * n2
+    return n1 * n2
 
 def divide(n1, n2):
-  return n1 / n2
-#math operations
+    return n1 / n2
+
+
+# Math operations
 operations = {
-  "+": add,
-  "-": subtract,
-  "*": multiply,
-  "/": divide
+    "+": add,
+    "-": subtract,
+    "*": multiply,
+    "/": divide
 }
 
 def calculator():
-    #user interaction
-    num1 = float(input("What's the first number?: "))#1 fixing int -> float
+    """User interaction"""
+    num1 = float(input("What's the first number?: "))
     calculation = True
     while calculation:
         operation_symbol = input("Pick an operation: ")
