@@ -32,6 +32,3 @@ class Menu:
             if item.name == order_name:
                 return item
         print("Sorry that item is not available.")
-
-coffee_check = Menu()
-print(coffee_check.get_items())

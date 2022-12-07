@@ -12,9 +12,11 @@ while machine_on:
     # Activating the item menu
     coffee = menu.get_items()
     # Prompt to user action
-    prompt = input(f"""\nType "off" to turn off the machine
-Type "report" to generate the current report
-Type these items: [{coffee}] to order?\n""").lower()
+    prompt = input(f"Type these items: [{coffee}] to order?\n").lower()
+    """Re-Comment 3 lines below for showing admin command on the console"""
+#     prompt = input(f"""\nType "off" to turn off the machine
+# Type "report" to generate the current report
+# Type these items: [{coffee}] to order?\n""").lower()
 
     """machine response based user prompt"""
     # Turning off the machine and breaking the loop
