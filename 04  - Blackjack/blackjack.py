@@ -1,17 +1,16 @@
-# 0 importing random, importing logo, creating global scope from cards deck
 from art import logo
 import random
 
 cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
 
-"""function ambil kartu"""
 def deal_cards():
+    """Drawing new random Cards"""
     draw = random.choice(cards)
     return draw
 
 
-"""function CEK BLACKJACK"""
 def score(cards):
+    """Ace Cards validations"""
     if sum(cards) == 21 and len(cards) == 2:
         return 0
     # ACE REPLACEMENT
@@ -22,10 +21,11 @@ def score(cards):
 
 
 def play_game():
+    """Blackjcak Game Processes"""
     user_card = []
     bot_card = []
-    """randoming 2 cards for both player"""
-    for x in range(2):
+
+    for x in range(2):  # drawing 2 cards for the first round
         user_card.append(deal_cards())
         bot_card.append(deal_cards())
 
@@ -51,6 +51,7 @@ def play_game():
         bot_score = score(bot_card)
 
     def compare(last_user, last_bot):
+        """Winner Validation """
         if user_score == bot_score:
             return "\nIt's a draw"
         elif user_score == 0 or user_score == 21:
@@ -79,6 +80,3 @@ while input('\nType "y" to start the game, or type "n" to end the session? ').lo
     play_game()
 else:
     print("See you next time")
-    
-    
-# changes for cherry pick to beta
