@@ -30,12 +30,14 @@ Type these items: [{coffee}] to order?\n""").lower()
     # Processing the user order
     else:
         # Handling invalid input
-        order = menu.find_drink(prompt)
-        # Checking the resource based on user order
-        if coffee_bot.is_resource_sufficient(order):
-            # Check the order cost >< user money
-            if cashier.make_payment(order.cost):
-                # (order.cost) is instantly calling the cost attributes under Menu Class
-
-                # Creating the coffee
-                coffee_bot.make_coffee(order)
+        if prompt not in coffee:
+            print("You insert wrong item, please try again")
+        else:
+            order = menu.find_drink(prompt)
+            # Checking the resource based on user order
+            if coffee_bot.is_resource_sufficient(order):
+                # Check the order cost >< user money
+                if cashier.make_payment(order.cost):
+                    # (order.cost) is instantly calling the cost attributes under Menu Class
+                    # Creating the coffee
+                    coffee_bot.make_coffee(order)
