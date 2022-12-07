@@ -1,4 +1,4 @@
-class CoffeeMaker:
+class Brain:
     """Models the machine that makes the coffee"""
     def __init__(self):
         self.resources = {
@@ -26,4 +26,4 @@ class CoffeeMaker:
         """Deducts the required ingredients from the resources."""
         for item in order.ingredients:
             self.resources[item] -= order.ingredients[item]
-        print(f"Here is your {order.name} ☕️. Enjoy!")
+        print(f"Here is your {order.name} ☕☕️. Enjoy!")
