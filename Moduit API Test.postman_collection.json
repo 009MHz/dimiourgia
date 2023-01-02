@@ -1,0 +1,380 @@
+{
+	"info": {
+		"_postman_id": "e0c442ff-f9da-4f0f-a037-08a34360cd7c",
+		"name": "Moduit API Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18937432"
+	},
+	"item": [
+		{
+			"name": "1. Create Account",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Response Validation\r",
+							"pm.test(\"Request is succeed\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response delay is accepted\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//Contents Response validation\r",
+							"pm.test(\"'id' is generated\", function () {\r",
+							"    pm.expect(String(pm.response.json().id)).to.not.be.empty;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"'token' is generated\", function () {\r",
+							"    pm.expect(String(pm.response.json().token)).to.not.be.empty;\r",
+							"});\r",
+							"\r",
+							"\r",
+							"// Parsing the inserted value into environment variables\r",
+							"var requestBody = JSON.parse(pm.request.body.raw);\r",
+							"var names = requestBody.name.split(\" \");\r",
+							"pm.environment.set(\"name\", requestBody.name);\r",
+							"pm.environment.set(\"email\", requestBody.email);\r",
+							"pm.environment.set(\"first_name\", names[0]);\r",
+							"pm.environment.set(\"last_name\", names[1]);\r",
+							"\r",
+							"\r",
+							"// Parsing the  output into environment variable\r",
+							"var data = JSON.parse(responseBody);\r",
+							"postman.setEnvironmentVariable(\"id\", data.id);\r",
+							"postman.setEnvironmentVariable(\"token\", data.token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Eve Holt\",\n  \"email\": \"eve.holt@reqres.in\",\n  \"password\": \"pistol\"\n}"
+				},
+				"url": {
+					"raw": "https://reqres.in/api/register",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2. Check Account Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Response Validation\r",
+							"pm.test(\"Request is succeed\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response delay is accepted\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//Contents Response validation\r",
+							"pm.test(\"User 'ID' is correct\", function () {\r",
+							"    var expectedId = Number(pm.environment.get(\"id\"));\r",
+							"    pm.expect(pm.response.json().data.id).to.eql(expectedId);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"User 'email' is correct\", function () {\r",
+							"    var expected_email = pm.environment.get(\"email\");\r",
+							"    pm.expect(pm.response.json().data.email).to.eql(expected_email);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"User first name is correct\", function () {\r",
+							"    var first = pm.environment.get(\"first_name\");\r",
+							"    pm.expect(pm.response.json().data.first_name).to.eql(first);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"User last name is correct\", function () {\r",
+							"    var last = pm.environment.get(\"last_name\");\r",
+							"    pm.expect(pm.response.json().data.last_name).to.eql(last);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "https://reqres.in/api/users/?id={{id}}",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users",
+						""
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "{{id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. Update Account",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Response Validation\r",
+							"pm.test(\"Request is succeed\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response delay is accepted\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(700);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//Contents Response validation\r",
+							"pm.test(\"Response body containts 'updated'\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"updated\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Updated response value is not empty\", function () {\r",
+							"    pm.expect(String(pm.response.json().updatedAt)).to.not.be.empty;\r",
+							"});\r",
+							"\r",
+							"\r",
+							"// Parsing the updated value into environment variables\r",
+							"var requestBody = JSON.parse(pm.request.body.raw);\r",
+							"pm.environment.set(\"gender\", requestBody.gender);\r",
+							"pm.environment.set(\"job\", requestBody.job);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"gender\": \"Female\",\r\n    \"job\": \"Buronan Mertua\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/users/?id={{id}}",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users",
+						""
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "{{id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3b. Validate the updated account",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Response Validation\r",
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([201,200,202]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response delay is accepted\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"// Validate the existing response content\r",
+							"pm.test(\"User 'ID' is correct\", function () {\r",
+							"    var expectedId = Number(pm.environment.get(\"id\"));\r",
+							"    pm.expect(pm.response.json().data.id).to.eql(expectedId);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"User 'email' is correct\", function () {\r",
+							"    var expected_email = pm.environment.get(\"email\");\r",
+							"    pm.expect(pm.response.json().data.email).to.eql(expected_email);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"User first name is correct\", function () {\r",
+							"    var first = pm.environment.get(\"first_name\");\r",
+							"    pm.expect(pm.response.json().data.first_name).to.eql(first);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"User last name is correct\", function () {\r",
+							"    var last = pm.environment.get(\"last_name\");\r",
+							"    pm.expect(pm.response.json().data.last_name).to.eql(last);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"// Validate the updated  content\r",
+							"pm.test(\"Job is updated\", function () {\r",
+							"    pm.expect(pm.environment.get(\"job\")).to.not.be.empty;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Gender is updated\", function () {\r",
+							"    pm.expect(pm.environment.get(\"gender\")).to.not.be.empty;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "https://reqres.in/api/users/?id={{id}}",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users",
+						""
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "{{id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4. Delete User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validating the Response contents\r",
+							"pm.test(\"User ID has been cleared\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});\r",
+							"pm.test(\"Response delay is accepted\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(700);\r",
+							"});\r",
+							"\r",
+							"//Removing environment variables\r",
+							"var variables = [\"token\", \"email\", \"first_name\", \"last_name\", \"name\", \"job\", \"gender\"];\r",
+							"variables.forEach(function (variable) {\r",
+							"    pm.environment.unset(variable);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//Validating the deleted environment\r",
+							"pm.test(\"Environments have been cleared\", function () {\r",
+							"    var variables = [\"token\", \"email\", \"first_name\", \"last_name\", \"name\", \"job\", \"gender\"];\r",
+							"    variables.forEach(function (variable) {\r",
+							"        pm.expect(pm.environment.get(variable)).to.be.undefined;\r",
+							"    });\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					}
+				],
+				"url": {
+					"raw": "https://reqres.in/api/users/?id={{id}}",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users",
+						""
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "{{id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
